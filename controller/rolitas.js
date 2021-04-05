@@ -51,6 +51,7 @@ bot.onText(/\/last(rolitas|ardientes|dirty|buendia)\s*(\d{0,2})/, async (msg, ma
 
 	const newRolitas = await spotify.lastRolitas(playlist, limit);
 	bot.sendMessage(chatId, newRolitas, telegramOptions);
+
 	await bot.stopPolling();
 });
 
