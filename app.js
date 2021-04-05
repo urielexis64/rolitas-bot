@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-require("./rolitas");
+require("./controller/rolitas");
 const Server = require("./models/server");
 
 const server = new Server();
