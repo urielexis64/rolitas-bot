@@ -5,21 +5,15 @@ const token = process.env.TOKEN;
 const parse_mode = "Markdown";
 const telegramOptions = {parse_mode, disable_web_page_preview: true};
 
-const bot = new TelegramBot(token, {polling: true});
+const bot = new TelegramBot(token, {polling: {interval: 2000}});
 const spotify = new Spotify();
 
-bot.onText(/\/addrolita (.+)/, async (msg, match) => {
+bot.onText(/hola/, async (msg, match) => {
 	const chatId = msg.chat.id;
-	const resp = match[1];
-	const message = await spotify.addRolita(resp);
-	bot.sendMessage(chatId, message);
+	bot.sendMessage(chatId, chatId);
 });
 
 bot.onText(/\/last(rolitas|ardientes|dirty|buendia)\s*(\d{0,2})/, async (msg, match) => {
-	if (bot.isPolling()) {
-		await bot.stopPolling();
-	}
-	await bot.startPolling();
 	const chatId = msg.chat.id;
 	let playlist = match[1];
 	let limit = match[2];
@@ -51,8 +45,6 @@ bot.onText(/\/last(rolitas|ardientes|dirty|buendia)\s*(\d{0,2})/, async (msg, ma
 
 	const newRolitas = await spotify.lastRolitas(playlist, limit);
 	bot.sendMessage(chatId, newRolitas, telegramOptions);
-
-	await bot.stopPolling();
 });
 
 checkNewRolitas(spotify.allPlaylists.Rolitas, spotify.currentTotalSongsRolitas);
@@ -61,11 +53,6 @@ checkNewRolitas(spotify.allPlaylists.RolitasDirty, spotify.currentTotalSongsDirt
 
 function checkNewRolitas(playlistId, currentTotalPlaylist) {
 	setInterval(async () => {
-		if (bot.isPolling()) {
-			await bot.stopPolling();
-		}
-		await bot.startPolling();
-
 		const totalSongs = await spotify.getTotalRolitas(playlistId);
 		if (totalSongs !== currentTotalPlaylist) {
 			const difference = totalSongs - currentTotalPlaylist;
@@ -81,8 +68,12 @@ function checkNewRolitas(playlistId, currentTotalPlaylist) {
 					`*${playlistName[0]}*\n\n*¡Hay ${difference} nuevas rolitas!*\n\n${lastRolita}`,
 					telegramOptions
 				);
+				bot.sendMessage(
+					"1618494293",
+					`*${playlistName[0]}*\n\n*¡Hay ${difference} nuevas rolitas!*\n\n${lastRolita}`,
+					telegramOptions
+				);
 			}
 		}
-		await bot.stopPolling();
 	}, 5 * 60_000);
 }
