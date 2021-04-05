@@ -5,7 +5,7 @@ const token = process.env.TOKEN;
 const parse_mode = "Markdown";
 const telegramOptions = {parse_mode, disable_web_page_preview: true};
 
-const bot = new TelegramBot(token, {polling: false});
+const bot = new TelegramBot(token, {polling: true});
 const spotify = new Spotify();
 
 checkNewRolitas(spotify.allPlaylists.Rolitas, spotify.currentTotalSongsRolitas);
