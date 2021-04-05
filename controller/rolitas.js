@@ -1,5 +1,5 @@
 const TelegramBot = require("node-telegram-bot-api");
-const Spotify = require("./models/spotify");
+const Spotify = require("../models/spotify");
 
 const token = process.env.TOKEN;
 const parse_mode = "Markdown";
