@@ -25,7 +25,7 @@ class Spotify {
 					this.allPlaylists.RolitasDirty
 				)),
 			]);
-		}, 0);
+		}, 10);
 
 		// Refresh token each hour
 		setInterval(() => {
