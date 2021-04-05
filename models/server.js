@@ -19,7 +19,7 @@ class Server {
 		// Public directory
 		this.app.use(express.static("public"));
 
-		this.app.get("/home", function (req, res) {
+		this.app.get("/", function (req, res) {
 			res.send("Naissss!");
 		});
 	}
