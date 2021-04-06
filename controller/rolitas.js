@@ -75,5 +75,5 @@ function checkNewRolitas(playlistId, currentTotalPlaylist) {
 				);
 			}
 		}
-	}, 5 * 60_000);
+	}, 2 * 60_000);
 }

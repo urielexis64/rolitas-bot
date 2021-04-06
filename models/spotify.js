@@ -28,8 +28,8 @@ class Spotify {
 		}, 10);
 
 		// Refresh token each hour
-		setInterval(() => {
-			this.currentToken = this.getToken();
+		setInterval(async () => {
+			this.currentToken = await this.getToken();
 		}, 3600 * 1000);
 	}
 
