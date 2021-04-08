@@ -123,7 +123,7 @@ class Spotify {
 				artist: rolita.track.artists[0].name,
 				added_by: rolita.added_by.id,
 				added_at: rolita.added_at,
-				song_url: rolita.track.album.external_urls.spotify,
+				song_url: rolita.track.external_urls.spotify,
 			};
 		});
 		let rolitasLength = rolitas.length;
