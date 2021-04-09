@@ -5,15 +5,15 @@ const token = process.env.TOKEN;
 const parse_mode = "Markdown";
 const telegramOptions = {parse_mode, disable_web_page_preview: true};
 
-const bot = new TelegramBot(token, {polling: {interval: 2000}});
+const bot = new TelegramBot(token, {polling: {interval: 5000}});
 const spotify = new Spotify();
 
-bot.onText(/hola/, async (msg, match) => {
+bot.onText(/ /, async (msg, match) => {
 	const chatId = msg.chat.id;
 	bot.sendMessage(chatId, chatId);
 });
 
-bot.onText(/\/last(rolitas|ardientes|dirty|buendia)\s*(\d{0,2})/, async (msg, match) => {
+bot.onText(/\/last(rolitas|ardientes|dirty|buendia|viejitas)\s*(\d{0,2})/, async (msg, match) => {
 	const chatId = msg.chat.id;
 	let playlist = match[1];
 	let limit = match[2];
@@ -30,6 +30,9 @@ bot.onText(/\/last(rolitas|ardientes|dirty|buendia)\s*(\d{0,2})/, async (msg, ma
 			break;
 		case "buendia":
 			playlist = spotify.allPlaylists.RolitasBuenDia;
+			break;
+		case "viejitas":
+			playlist = spotify.allPlaylists.RolitasViejitas;
 			break;
 	}
 
@@ -50,6 +53,7 @@ bot.onText(/\/last(rolitas|ardientes|dirty|buendia)\s*(\d{0,2})/, async (msg, ma
 checkNewRolitas(spotify.allPlaylists.Rolitas, spotify.currentTotalSongsRolitas);
 checkNewRolitas(spotify.allPlaylists.RolitasArdientes, spotify.currentTotalSongsArdientes);
 checkNewRolitas(spotify.allPlaylists.RolitasDirty, spotify.currentTotalSongsDirty);
+checkNewRolitas(spotify.allPlaylists.RolitasViejitas, spotify.currentTotalSongsViejitas);
 
 function checkNewRolitas(playlistId, currentTotalPlaylist) {
 	setInterval(async () => {

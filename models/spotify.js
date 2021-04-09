@@ -9,6 +9,7 @@ class Spotify {
 		RolitasArdientes: "1vsDheCTaKXKdT68Bd9idY",
 		RolitasDirty: "6edyVGP1odsLCTm4oK9Txk",
 		RolitasBuenDia: "05pthw3W3zl4KdDegPZM68",
+		RolitasViejitas: "7pIzRDSWLVX3zpfUsKnfQq",
 	};
 
 	constructor() {
@@ -23,6 +24,9 @@ class Spotify {
 				)),
 				(this.currentTotalSongsDirty = await this.getTotalRolitas(
 					this.allPlaylists.RolitasDirty
+				)),
+				(this.currentTotalSongsViejitas = await this.getTotalRolitas(
+					this.allPlaylists.RolitasViejitas
 				)),
 			]);
 		}, 10);
@@ -42,7 +46,7 @@ class Spotify {
 		};
 	}
 
-	// Required headers to request new token
+	// Required headers to request playlist items
 	get lastRolitasHeaders() {
 		return {
 			Accept: "application/json",
@@ -55,7 +59,7 @@ class Spotify {
 	get lastRolitasParams() {
 		return {
 			market: "es",
-			offset: 100,
+			//offset: 100,
 		};
 	}
 
@@ -79,10 +83,19 @@ class Spotify {
 		try {
 			if (!this.currentToken) this.currentToken = await this.getToken();
 
+			const params = {
+				...this.lastRolitasParams,
+				offset:
+					playlistId === this.allPlaylists.RolitasBuenDia ||
+					playlistId === this.allPlaylists.RolitasViejitas
+						? 30
+						: 100,
+			};
+
 			const instance = axios.create({
 				baseURL: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
 				headers: this.lastRolitasHeaders,
-				params: this.lastRolitasParams,
+				params,
 			});
 			const response = await instance.get();
 			const data = response.data;
@@ -139,6 +152,9 @@ class Spotify {
 				break;
 			case this.allPlaylists.RolitasBuenDia:
 				playlist = "Buen Día ☀";
+				break;
+			case this.allPlaylists.RolitasViejitas:
+				playlist = "Viejitas 🎶";
 				break;
 		}
 		let final = `*🆕 Últimas ${rolitasLength} Rolitas ${playlist} 🆕\n\n*`;
