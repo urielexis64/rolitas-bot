@@ -5,10 +5,10 @@ const token = process.env.TOKEN;
 const parse_mode = "Markdown";
 const telegramOptions = {parse_mode, disable_web_page_preview: true};
 
-const bot = new TelegramBot(token, {polling: {interval: 5000}});
+const bot = new TelegramBot(token, {polling: {interval: 3000}});
 const spotify = new Spotify();
 
-bot.onText(/ /, async (msg, match) => {
+bot.onText(/id/, async (msg, match) => {
 	const chatId = msg.chat.id;
 	bot.sendMessage(chatId, chatId);
 });
@@ -53,6 +53,7 @@ bot.onText(/\/last(rolitas|ardientes|dirty|buendia|viejitas)\s*(\d{0,2})/, async
 checkNewRolitas(spotify.allPlaylists.Rolitas, spotify.currentTotalSongsRolitas);
 checkNewRolitas(spotify.allPlaylists.RolitasArdientes, spotify.currentTotalSongsArdientes);
 checkNewRolitas(spotify.allPlaylists.RolitasDirty, spotify.currentTotalSongsDirty);
+checkNewRolitas(spotify.allPlaylists.RolitasBuenDia, spotify.currentTotalSongsBuenDia);
 checkNewRolitas(spotify.allPlaylists.RolitasViejitas, spotify.currentTotalSongsViejitas);
 
 function checkNewRolitas(playlistId, currentTotalPlaylist) {

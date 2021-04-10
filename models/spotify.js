@@ -25,6 +25,9 @@ class Spotify {
 				(this.currentTotalSongsDirty = await this.getTotalRolitas(
 					this.allPlaylists.RolitasDirty
 				)),
+				(this.currentTotalSongsBuenDia = await this.getTotalRolitas(
+					this.allPlaylists.RolitasBuenDia
+				)),
 				(this.currentTotalSongsViejitas = await this.getTotalRolitas(
 					this.allPlaylists.RolitasViejitas
 				)),
@@ -111,11 +114,21 @@ class Spotify {
 		try {
 			if (!this.currentToken) this.currentToken = await this.getToken();
 
+			const params = {
+				...this.lastRolitasParams,
+				offset:
+					playlistId === this.allPlaylists.RolitasBuenDia ||
+					playlistId === this.allPlaylists.RolitasViejitas
+						? 30
+						: 100,
+			};
+
 			const instance = axios.create({
 				baseURL: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
 				headers: this.lastRolitasHeaders,
-				params: this.lastRolitasParams,
+				params,
 			});
+
 			const response = await instance.get();
 			const data = response.data;
 			const reverseItems = data.items.reverse();
